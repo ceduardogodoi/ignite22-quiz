@@ -23,6 +23,8 @@ type Props = PressableProps & {
   type?: keyof typeof TYPE_COLORS;
 }
 
+const PressableAnimated = Animated.createAnimatedComponent(Pressable);
+
 export function Level({ title, type = 'EASY', isChecked = false, ...rest }: Props) {
   const scale = useSharedValue(1);
   const checked = useSharedValue(1);
@@ -63,22 +65,15 @@ export function Level({ title, type = 'EASY', isChecked = false, ...rest }: Prop
   }, [isChecked])
 
   return (
-    <Pressable
+    <PressableAnimated
       onPressIn={onPressIn}
       onPressOut={onPressOut}
+      style={[styles.container, animatedContainerStyle, { borderColor: COLOR }]}
       {...rest}
     >
-      <Animated.View style={
-        [
-          styles.container,
-          animatedContainerStyle,
-          { borderColor: COLOR }
-        ]
-      }>
-        <Animated.Text style={[styles.title, animatedTextStyle]}>
-          {title}
-        </Animated.Text>
-      </Animated.View>
-    </Pressable>
+      <Animated.Text style={[styles.title, animatedTextStyle]}>
+        {title}
+      </Animated.Text>
+    </PressableAnimated>
   );
 }
