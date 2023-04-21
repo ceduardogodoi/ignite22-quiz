@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { FlatList, View } from 'react-native';
-import { Trophy } from 'phosphor-react-native';
+import { Button, FlatList, View } from 'react-native';
+import Animated, { Easing, FlipInYLeft, RotateInUpLeft, SlideOutLeft, ZoomOut } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
+import { Trophy } from 'phosphor-react-native';
 
 import { Level } from '../../components/Level';
 import { Header } from '../../components/Header';
@@ -13,6 +14,7 @@ import { QUIZZES } from '../../data/quizzes';
 export function Home() {
   const [quizzes, setQuizzes] = useState(QUIZZES);
   const [levels, setLevels] = useState([1, 2, 3]);
+  const [show, setShow] = useState(true);
 
   const { navigate } = useNavigation();
 
@@ -40,6 +42,15 @@ export function Home() {
         subtitle="Treine seus conhecimento"
         onPress={() => navigate('history')}
       />
+
+      {show && (
+        <Animated.View
+          entering={RotateInUpLeft}
+          exiting={SlideOutLeft}
+          style={{ width: 50, height: 50, backgroundColor: 'red' }}
+        />
+      )}
+      <Button title="Teste" onPress={() => setShow(state => !state)} />
 
       <View style={styles.levels}>
         <Level title="Fácil" type="EASY" onPress={() => handleLevelFilter(1)} isChecked={levels.includes(1)} />
