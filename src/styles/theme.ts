@@ -20,4 +20,4 @@ export const THEME = {
     REGULAR: "Roboto_400Regular",
     BOLD: "Roboto_700Bold"
   }
-};
+} as const;
