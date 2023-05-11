@@ -15,6 +15,8 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 
+import { Audio } from 'expo-av';
+
 import { QUIZ } from '../../data/quiz';
 import { historyAdd } from '../../storage/quizHistoryStorage';
 
@@ -55,6 +57,16 @@ export function Quiz() {
   const route = useRoute();
   const { id } = route.params as Params;
 
+  async function playSound(isCorrect: boolean) {
+    const file = isCorrect ? require('../../assets/correct.mp3') : require('../../assets/wrong.mp3');
+    const { sound } = await Audio.Sound.createAsync(file, {
+      shouldPlay: true,
+    });
+
+    await sound.setPositionAsync(0);
+    await sound.playAsync();
+  }
+
   function handleSkipConfirm() {
     Alert.alert('Pular', 'Deseja realmente pular a questão?', [
       { text: 'Sim', onPress: () => handleNextQuestion() },
@@ -92,9 +104,11 @@ export function Quiz() {
 
     if (quiz.questions[currentQuestion].correct === alternativeSelected) {
       setPoints(prevState => prevState + 1);
+      await playSound(true);
       setStatusReply(1)
       handleNextQuestion();
     } else {
+      await playSound(false);
       setStatusReply(2)
       shakeAnimation();
     }
