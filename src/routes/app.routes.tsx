@@ -31,6 +31,7 @@ export function AppRoutes() {
           component={Finish}
         />
       </Group>
+
       <Screen
         name="history"
         component={History}
